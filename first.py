@@ -36,16 +36,19 @@ allinfo["log2_count"] = np.log2(allinfo["count"]+1)
 sns.set_theme(style="whitegrid")
 sns.boxplot(allinfo, x="sample", y="log2_count") 
 
+#eliminare i geni che non codificano la proteina o che non sono riconosciuti nel database swiss-prot
+df_filtered_prot_gene = df[df["UniProtKB/Swiss-Prot ID"].notna()]
 
-df_sample2 = allinfo[allinfo["sample"] == "GSM1480292"]
+df_filtered_prot_gene.to_csv("data\prot_gene.csv", index=False)
 
-df = df_sample2["gene_id"]
+df_filtered_prot_id = df_filtered_prot_gene["UniProtKB/Swiss-Prot ID"]
 
-lista_id = df.to_list()
+df_filtered_prot_id.to_csv("data\prot.csv", index=False, header=False)
 
-print(lista_id)
-
+#filtrare i geni togliendo quelli minori di tre, rimanendo solo quelli del prot.gene
+#corrisponda tra sequenza peptidica dei fasta e le proteine nel datset prot_gene.csv
 
 
 #togliere i rispettivi geni che non si evidenziano perchè il loro count è troppo basso log2 < 3 scartati
+
 #eliminare le non proteine che codificano i geni 
